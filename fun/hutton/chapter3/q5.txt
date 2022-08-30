@@ -1,0 +1,1 @@
+para afirmar que duas funções são iguais devemos ter retornos iguais para cada um dos mesmos argumentos possíveis. como existem infinitas possibilidades de argumentos, verificar essa igualdade em funções que dependam deles é inexequível. funções constantes, no entanto, podem ser comparadas e se relacionar por igualdade ou difereça. 
