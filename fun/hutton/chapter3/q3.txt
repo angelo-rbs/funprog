@@ -1,0 +1,10 @@
+
+3.
+	a) [a] -> ([a] -> ([a] -> a))
+	b) (a, b) -> (b, a)
+	c) a -> b -> (a, b)
+	d) Num a => a
+	e) Eq a => [a] -> [a] -> Bool
+	f) (a -> a) -> a -> a -- *
+		
+		-- o retorno da primeira f é aplicado nela novamente, logo deve ser do mesmo tipo de sua entrada
