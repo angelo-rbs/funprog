@@ -1,0 +1,6 @@
+1. 
+	a) [Char]
+	b) (Char, Char, Char)
+	c) [(Bool, Char)]
+	d) ([Bool], [Char])
+	e) [([Char] -> Char)]
