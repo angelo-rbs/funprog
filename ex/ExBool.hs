@@ -2,21 +2,21 @@ module ExBool where
 
 -- Do not alter this import!
 import Prelude
-    ( Show(..)
-    , Eq(..)
-    , Ord(..)
-    , Num(..)
-    , Enum(..)
-    , Integral(..)
-    , Int
-    , Char
-    , (++)
-    , ($)
-    , (.)
-    , undefined
-    , error
-    , otherwise
-    )
+  ( Char,
+    Enum (..),
+    Eq (..),
+    Int,
+    Integral (..),
+    Num (..),
+    Ord (..),
+    Show (..),
+    error,
+    otherwise,
+    undefined,
+    ($),
+    (++),
+    (.),
+  )
 
 -- Define evenerything that is undefined,
 -- without using standard Haskell functions.
@@ -25,46 +25,42 @@ import Prelude
 data Bool = False | True
 
 instance Show Bool where
-
-    show = undefined
+  show = undefined
 
 instance Enum Bool where
+  toEnum = undefined
 
-    toEnum  = undefined
-
-    fromEnum  = undefined
+  fromEnum = undefined
 
 -- conjunction (AND)
 (&&) :: Bool -> Bool -> Bool
-(&&) a b
- 	| True && True = True
- 	|    _ && _    = False
+(&&) True True = True
+(&&) _ _ = False
 
 infixr 3 &&
 
 -- disjunction (OR)
 (||) :: Bool -> Bool -> Bool
-(||) a b
-	| False || False = False
-	|     _ || _     = True
+(||) False False = False
+(||) _ _ = True
 
 infixr 2 ||
 
 -- NAND (Sheffer stroke)
 (/|\) :: Bool -> Bool -> Bool
-(/|\) = undefined
+(/|\) a b = not (a && b)
 
-infixr 2 /|
+infixr 2 /|\
 
 -- NOR (aka: Peirce arrow or Quine dagger)
 (\|/) :: Bool -> Bool -> Bool
-(\|/) = undefined
+(\|/) a b = a && b
 
 infixr 2 \|/
 
 -- XOR (exclusive disjunction)
 (<=/=>) :: Bool -> Bool -> Bool
-(<=/=>) a b = a /= b
+(<=/=>) a b = not (a && b)
 
 infixr 2 <=/=>
 
@@ -75,24 +71,27 @@ not False = True
 
 -- if-then-else expression
 ifThenElse :: Bool -> a -> a -> a
-ifThenElse = undefined
+ifThenElse True b c = b
+ifThenElse False b c = c
 
 -- logical "implies"
 (==>) :: Bool -> Bool -> Bool
-(==>) = undefined
+(==>) True False = False
+(==>) _ _ = True
 
 infixr 1 ==>
 
 -- logical "implied by"
 (<==) :: Bool -> Bool -> Bool
-(<==) = undefined
+(<==) False True = False
+(<==) _ _ = True
 
 infixl 1 <==
 
 -- logical equivalence
 (<=>) :: Bool -> Bool -> Bool
-(<=>) = undefined
+(<=>) True True = True
+(<=>) False False = True
+(<=>) _ _ = False
 
 infixr 1 <=>
-
-
