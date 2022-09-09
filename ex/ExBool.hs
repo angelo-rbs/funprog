@@ -25,12 +25,16 @@ import Prelude
 data Bool = False | True
 
 instance Show Bool where
-  show = undefined
+  show True = "True"
+  show False = "False"
 
 instance Enum Bool where
-  toEnum = undefined
+  toEnum a
+    | a /= 0 = True
+    | otherwise = False
 
-  fromEnum = undefined
+  fromEnum True = 1
+  fromEnum False = 0
 
 -- conjunction (AND)
 (&&) :: Bool -> Bool -> Bool
