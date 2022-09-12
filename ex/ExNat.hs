@@ -123,7 +123,12 @@ divides = (<|>)
 -- x `absDiff` y = |x - y|
 -- (Careful here: this - is the real minus operator!)
 absDiff :: Nat -> Nat -> Nat
-absDiff = undefined
+absDiff Zero x = x
+absDiff x Zero = x
+absDiff (Succ x) (Succ y)
+  | x == y = Zero
+  | y <= x = absDiff x y
+  | otherwise = absDiff (Succ y) (Succ x)
 
 (|-|) = absDiff
 
