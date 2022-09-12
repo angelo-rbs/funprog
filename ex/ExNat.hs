@@ -74,34 +74,49 @@ odd (Succ n) = not (odd n)
 (<+>) :: Nat -> Nat -> Nat
 (<+>) Zero x = x
 (<+>) x Zero = x
-(<+>) (Succ n) (Succ m) = 
+(<+>) (Succ n) (Succ m) = Succ (Succ (n + m))
 
 -- This is called the dotminus or monus operator
 -- (also: proper subtraction, arithmetic subtraction, ...).
 -- It behaves like subtraction, except that it returns 0
 -- when "normal" subtraction would return a negative number.
 (<->) :: Nat -> Nat -> Nat
-(<->) = undefined
+(<->) Zero _ = Zero
+(<->) a Zero = a
+(<->) (Succ m) (Succ n) = (<->) m n
 
 -- multiplication
 (<*>) :: Nat -> Nat -> Nat
-(<*>) = undefined
+(<*>) Zero _ = Zero
+(<*>) _ Zero = Zero
+(<*>) (Succ m) n = (m <*> n) + n
 
 -- exponentiation
 (<^>) :: Nat -> Nat -> Nat
-(<^>) = undefined
+(<^>) Zero Zero = error "indeterminação"
+(<^>) Zero _ = Zero
+(<^>) _ Zero = Succ Zero
+(<^>) m (Succ Zero) = m
+(<^>) m (Succ n) = (<^>) m n <*> m
 
 -- quotient
 (</>) :: Nat -> Nat -> Nat
-(</>) = undefined
+(</>) _ Zero = error "divisão por zero"
+(</>) Zero _ = Zero
+(</>) m (Succ Zero) = m
+(</>) m n = (</>) (m <-> n) n <+> Succ Zero
 
 -- remainder
 (<%>) :: Nat -> Nat -> Nat
-(<%>) = undefined
+(<%>) _ Zero = error "divisão por zero"
+(<%>) Zero _ = Zero
+(<%>) m n
+  | n <= m = (<%>) (m <-> n) n
+  | otherwise = m
 
 -- divides
 (<|>) :: Nat -> Nat -> Bool
-(<|>) = undefined
+(<|>) m n = (<%>) m n == Zero
 
 divides = (<|>)
 
@@ -113,11 +128,16 @@ absDiff = undefined
 (|-|) = absDiff
 
 factorial :: Nat -> Nat
-factorial = undefined
+factorial Zero = Succ Zero
+factorial (Succ Zero) = Succ Zero
+factorial (Succ n) = Succ n <*> factorial n
 
 -- signum of a number (-1, 0, or 1)
 sg :: Nat -> Nat
-sg = undefined
+sg m
+  | (==) m Zero = Zero
+  | (<=) m Zero = -1
+  | otherwise = Succ Zero
 
 -- lo b a is the floor of the logarithm base b of a
 lo :: Nat -> Nat -> Nat
