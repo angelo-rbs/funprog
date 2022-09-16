@@ -1,6 +1,7 @@
 module ExNat where
 
 -- Do not alter this import!
+
 import Prelude
   ( Bool (..),
     Eq (..),
@@ -144,9 +145,10 @@ sg m
   | (<=) m Zero = -1
   | otherwise = Succ Zero
 
--- lo b a is the floor of the logarithm base b of a
+-- lo b a is the floor of the logarithm base b of a. TERMINAR!!
 lo :: Nat -> Nat -> Nat
-lo = undefined
+lo (Succ Zero) _ = Succ Zero
+lo b a = (</>) (lo 10 (b |-| a)) 10 <+> 1
 
 --
 -- For the following functions we need Num(..).
