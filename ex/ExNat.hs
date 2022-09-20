@@ -105,7 +105,10 @@ odd (Succ n) = not (odd n)
 (</>) _ Zero = error "divisão por zero"
 (</>) Zero _ = Zero
 (</>) m (Succ Zero) = m
-(</>) m n = (</>) (m <-> n) n <+> Succ Zero
+(</>) m n 
+  | (==) m n = Succ Zero
+  | (<=) m n = Zero
+  | otherwise = (</>) (m <-> n) n <+> Succ Zero
 
 -- remainder
 (<%>) :: Nat -> Nat -> Nat
@@ -147,8 +150,13 @@ sg m
 
 -- lo b a is the floor of the logarithm base b of a. TERMINAR!!
 lo :: Nat -> Nat -> Nat
-lo (Succ Zero) _ = Succ Zero
-lo b a = (</>) (lo 10 (b |-| a)) 10 <+> 1
+lo b a
+  | b == Zero = error "log de base 0"
+  | b == Succ Zero = error "log de base 1"
+  | a == Succ Zero = Zero
+  | a > b = lo b ((</>) a b) + Succ Zero
+  | a == b = Succ Zero
+  | otherwise = Zero
 
 --
 -- For the following functions we need Num(..).
@@ -156,10 +164,12 @@ lo b a = (</>) (lo 10 (b |-| a)) 10 <+> 1
 --
 
 toNat :: Integral a => a -> Nat
-toNat = undefined
+toNat 0 = Zero
+toNat a = (<+>)  (toNat (a-1)) (Succ Zero)
 
 fromNat :: Integral a => Nat -> a
-fromNat = undefined
+fromNat Zero = 0
+fromNat nat = fromNat ((<->) nat (Succ Zero)) + 1
 
 -- Obs: we can now easily make Nat an instance of Num.
 instance Num Nat where
