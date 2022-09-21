@@ -11,6 +11,8 @@ import Prelude
 import qualified Prelude   as P
 import qualified Data.List as L
 import qualified Data.Char as C
+import Distribution.Simple.Utils (xargs)
+import Distribution.SPDX (LicenseId(ZPL_1_1))
 
 -- to use a function from a qualified import
 -- you need to prefix its name with its alias
@@ -22,28 +24,44 @@ import qualified Data.Char as C
 -- You MUST NOT use ANY of these in your code
 
 head :: [a] -> a
-head = undefined
+head [] = error "vazio"
+head (x:xs) = x
 
 tail :: [a] -> [a]
-tail = undefined
+tail [] = error "empty list"
+tail [x] = []
+tail (x:xs) = xs 
 
-null :: [a] -> Bool
-null = undefined
+--null :: [a] -> Bool
+
 
 length :: Integral i => [a] -> i
-length = undefined
+length [] = 0
+length (x:xs) = length xs + 1
+
 
 sum :: Num a => [a] -> a
-sum = undefined
+sum [] = error "empty list"
+sum [x] = x
+sum (x:xs) = x + sum xs 
 
 product :: Num a => [a] -> a
-product = undefined
+product [] = error "empty list"
+product [x] = x
+product (x:xs) = x * product xs
 
 reverse :: [a] -> [a]
-reverse = undefined
+reverse [] = []
+reverse (x:xs) = append x (reverse xs)
+    where append y [] = [y]
+          append y (z:zs) = z : append y zs
 
 (++) :: [a] -> [a] -> [a]
-(++) = undefined
+(++) [] xs = xs 
+(++) xs [] = xs
+(++) xs (y:ys) = (++) (append y xs) ys
+    where append y [] = [y]
+          append y (z:zs) = z : append y zs
 
 -- right-associative for performance!
 -- (what?!)
@@ -51,7 +69,8 @@ infixr 5 ++
 
 -- (snoc is cons written backwards)
 snoc :: a -> [a] -> [a]
-snoc = undefined
+snoc y [] = [y]
+snoc y (z:zs) = z : snoc y zs
 
 (<:) :: [a] -> a -> [a]
 (<:) = flip snoc
@@ -66,8 +85,21 @@ xs +++ (y:ys) = (xs +++ [y]) +++ ys
 -- (hmm?)
 infixl 5 +++
 
--- minimum :: Ord a => [a] -> a
--- maximum :: Ord a => [a] -> a
+minimum :: Ord a => [a] -> a
+minimum [] = error "empty list"
+minimum [x] = x
+minimum (x:xs) = min x (minimum xs)
+    where min a b
+            | a < b = a 
+            | otherwise = b
+
+maximum :: Ord a => [a] -> a
+maximum [] = error "empty list"
+maximum [x] = x
+maximum (x:xs) = max x (maximum xs)
+    where min a b
+            | a > b = a 
+            | otherwise = b
 
 -- take
 -- drop
